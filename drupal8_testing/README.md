@@ -90,6 +90,9 @@ docker-compose run --user 82 php vendor/bin/phpunit -c core modules/contrib/meta
 // If you omit the printer command from phpunit.xml, you can call it from the command line.
 docker-compose run --user 82 php vendor/bin/phpunit -c core --group views --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 
+// If your environment has gotten all crufty from failed tests, tear it down and start over
+docker-compose down -v
+
 ```
 
 ## Docker Commands
