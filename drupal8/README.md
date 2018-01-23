@@ -9,7 +9,7 @@ Note that this configuration also passes your ssh credentials and drush aliases 
 
 ## /mariadb-init
 
-Copy this folder to your repository. Any database dump in this folder will be loaded when the container is created. This default file just creates an empty database so Drupal will work initally. You can swap in a database dump from your actual production site, or use `drush sql-sync` once the container has launched.
+Copy this folder to the top level of your repository. Any database dump in this folder will be loaded when the container is created. The default file just creates an empty database so Drupal will work initally. You can swap in a database dump from your actual production site, or use `drush sql-sync` once the container has launched.
 
 ## .env
 The .env file goes in the root of your repository. You can use it to set up environment variables that you can pass into your containers. By changing variables in this file, you only have to change variables in one place and it will be picked up in your docker-compose file. `COMPOSE_PROJECT_NAME` is a special variable used by Docker that will set the prefix for the container names. In this example, it is also used in the docker-compose file to set the browser url so each project has its own url.
@@ -40,40 +40,25 @@ Watch the logs to see when it is ready:
 docker-compose logs -f
 ```
 
-The containers are ready when you start to see messages like `mailhog_1    | [APIv1] KEEPALIVE /api/v1/events`
-
-Exit watching the logs with ctl-c.
-
-The setting for `COMPOSE_PROJECT_NAME` controls everything else. If you set that to `drupal8`, you would go to `http://drupal8.docker.localhost:8000` in your browser to see your site once it's up and running.
-
-
-Run drush commands to check status, copy a database and files from production, clear caches, etc:
+The containers are ready when you start to see messages like the following (exit the logs with ctl-c):
 
 ```
-docker-compose exec --user 82 php drush
+mailhog_1    | [APIv1] KEEPALIVE /api/v1/events
 ```
-For ease in use, create an alias for that in your bash_profile.
 
-More Docker commands:
+If you set `COMPOSE_PROJECT_NAME` to `drupal8`, you would go to the following location in your browser to see your site once it's up and running. 
 
 ```
-// See all the containers:
-docker ps
+http://drupal8.docker.localhost:8000
+```
 
-// Start your containers:
-docker-compose up -d
+Some browsers, like Chrome, will automatically handle any url that ends with `localhost`, otherwise you may have to add this to your hosts file. 
 
-// Stop your containers without destroying data:
-docker-compose stop
+Commands:
 
-// Destroy containers and all their data:
-docker-compose down -v
-
-// Watch the logs (exit with ctl-c):
-docker compose logs -f
-
-// Execute a command inside the php container:
-docker-compose exec --user 82 php
+```
+// Pipe a command through the php container:
+docker-compose exec --user 82 php COMMAND
 
 // Run drush:
 docker-compose exec --user 82 php drush st
@@ -81,5 +66,21 @@ docker-compose exec --user 82 php drush st
 // Execute mysql:
 docker-compose exec --user 82 php mysql -udrupal -pdrupal -hmariadb
 
+// See all the containers:
+docker ps
+
+// Start your containers in the background (detached):
+docker-compose up -d
+
+// Stop your containers without destroying data:
+docker-compose stop
+
+// Destroy containers and all their data volumes:
+docker-compose down -v
+
+// Watch the logs (exit with ctl-c):
+docker compose logs -f
 
 ```
+
+For ease in use, create an alias for `docker-compose exec --user 82 php ` in your bash_profile to avoid typing it over and over.
