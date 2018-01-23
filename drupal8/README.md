@@ -44,7 +44,7 @@ The containers are ready when you start to see messages like `mailhog_1    | [AP
 
 Exit watching the logs with ctl-c.
 
-The setting for `COMPOSE_PROJECT_NAME` controls everything else. If you set that to `drupal8`, you would go to `http://drupal8.docker.localhost` in your browser to see your site once it's up and running.
+The setting for `COMPOSE_PROJECT_NAME` controls everything else. If you set that to `drupal8`, you would go to `http://drupal8.docker.localhost:8000` in your browser to see your site once it's up and running.
 
 
 Run drush commands to check status, copy a database and files from production, clear caches, etc:
