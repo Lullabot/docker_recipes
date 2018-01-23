@@ -5,7 +5,7 @@ This is a recipe for writing and running tests in a Drupal 8 site, using Docker4
 ## docker-compose.yml
 Place this file in the root of your repository. It contains basic settings that should work in most cases. You can swap in different versions in each container depending on the version of Drupal and PHP you want to run on. See many other options on [Docker4Drupal](https://github.com/wodby/docker4drupal/blob/master/docker-compose.yml).
 
-Note that this configuration also passes your ssh credentials and drush aliases into the container.
+Note that this configuration also passes your ssh credentials and drush aliases into the container. Also note that some of the XDEBUG variables need to be enabled for testing to work.
 
 ## /mariadb-init
 
@@ -78,7 +78,7 @@ Some browsers, like Chrome, will automatically handle any url that ends with `lo
 // One time, make sure all testing requirements are installed.
 composer install  —dev
 
-// Run all one core test
+// Run one core test
 docker-compose run --user 82 php vendor/bin/phpunit -c core core/tests/Drupal/Tests/Core/Password/PasswordHashingTest
 
 // Run functional tests for views
