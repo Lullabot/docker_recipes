@@ -12,9 +12,8 @@ services:
       MYSQL_USER: drupal
       MYSQL_PASSWORD: drupal
     volumes:
-      # Uncomment and create a directory at this location (/mariadb-init). 
-      # Place in it a database dump and it will be loaded when the container is initiated.
-      #- ./mariadb-init:/docker-entrypoint-initdb.d
+      # Any database dump in /mariadb-init will be loaded when the container is initiated.
+      - ./mariadb-init:/docker-entrypoint-initdb.d
 
   php:
     image: wodby/drupal-php:7.1-3.0.0
