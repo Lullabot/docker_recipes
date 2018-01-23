@@ -1,6 +1,6 @@
-# Drupal 8
+# Drupal 8 Testing
 
-This is a recipe for a basic Docker configuration for a Drupal 8 site, using Docker4Drupal.
+This is a recipe for writing and running tests in a Drupal 8 site, using Docker4Drupal.
 
 ## docker-compose.yml
 Place this file in the root of your repository. It contains basic settings that should work in most cases. You can swap in different versions in each container depending on the version of Drupal and PHP you want to run on. See many other options on [Docker4Drupal](https://github.com/wodby/docker4drupal/blob/master/docker-compose.yml).
