@@ -9,7 +9,7 @@ Note that this configuration also passes your ssh credentials and drush aliases 
 
 ## /mariadb-init
 
-Copy this folder to the top level of your repository. Any database dump in this folder will be loaded when the container is created. The default file just creates an empty database so Drupal will work initally. You can swap in a database dump from your actual production site, or use `drush sql-sync` once the container has launched.
+Copy this folder to the top level of your repository. Any database dump in this folder will be loaded when the container is created. For writing tests, I use our [Pantheon Drupal 8 Demo site](https://dashboard.pantheon.io/sites/0b158d4b-5278-414b-8150-6afb75ac1f8e#dev/code)  as a test environment (credentials are in LastPass), and I have a database dump from that site in this folder.
 
 ## .env
 The .env file goes in the root of your repository. You can use it to set up environment variables that you can pass into your containers. By changing variables in this file, you only have to change variables in one place and it will be picked up in your docker-compose file. `COMPOSE_PROJECT_NAME` is a special variable used by Docker that will set the prefix for the container names. In this example, it is also used in the docker-compose file to set the browser url so each project has its own url.
@@ -26,6 +26,23 @@ if (!empty($_SERVER['WODBY_DIR_FILES'])) {
 
 The Drupal4Docker container expects to find your files at `/sites/default/files`, and private files at `/sites/default/files/private`. 
 Add these files to your local checkout, or move them in later using drush with something like `drush rsync @prod:%files/ @self:%files`.
+
+## phpunit.xml
+
+This phpunit.xml file has been populated with values that will work correctly in a Drupal4Docker site. Copy this file to `/core/phpunit.xml`.
+
+Some of the values that matter are:
+
+```
+// Make sure the output will display on the command line in the container.
+printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter
+
+// Simpletest values, confusingly required even if you use the new browser tests instead of Simpletest.
+<env name="SIMPLETEST_BASE_URL" value="http://nginx"/>
+<env name="SIMPLETEST_DB" value="mysql://drupal:drupal@mariadb/drupal"/>
+<env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/sites/default/files/simpletest"/>
+
+```
 
 ## Usage
 
@@ -53,6 +70,27 @@ http://drupal8.docker.localhost:8000
 ```
 
 Some browsers, like Chrome, will automatically handle any url that ends with `localhost`, otherwise you may have to add this to your hosts file. 
+
+
+## Running Tests
+
+```
+// One time, make sure all testing requirements are installed.
+composer install  —dev
+
+// Run all one core test
+docker-compose run --user 82 php vendor/bin/phpunit -c core core/tests/Drupal/Tests/Core/Password/PasswordHashingTest
+
+// Run functional tests for views
+docker-compose run --user 82 php vendor/bin/phpunit -c core --group views  --verbose --testsuite=functional
+
+// Run unit tests for metatag
+docker-compose run --user 82 php vendor/bin/phpunit -c core modules/contrib/metatag --verbose --testsuite=unit
+
+// If you omit the printer command from phpunit.xml, you can call it from the command line.
+docker-compose run --user 82 php vendor/bin/phpunit -c core --group views --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+
+```
 
 ## Docker Commands
 
