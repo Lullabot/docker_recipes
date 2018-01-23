@@ -24,7 +24,7 @@ if (!empty($_SERVER['WODBY_DIR_FILES'])) {
 }
 ```
 
-The D8 files will be created at `/sites/default/files`, and private files at `/sites/default/files/private`. 
+The D8 files will be created at `/sites/default/files`, and private files at `/sites/default/files/private`. The D7 files should be located at `/private/d7files`.
 
 ## Usage
 
