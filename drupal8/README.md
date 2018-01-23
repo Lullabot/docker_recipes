@@ -19,3 +19,10 @@ if (!empty($_SERVER['WODBY_DIR_FILES'])) {
   settings.docker.local.php';
 }
 ```
+
+The Drupal4Docker container expects to find your files at `/sites/default/files`, and private files at `/sites/default/files/private`. 
+Add these files to your local checkout, or move them in later using drush with something like `drush rsync @prod:%files/ @self:%files`.
+
+## Usage
+
+The setting for `COMPOSE_PROJECT_NAME` controls everything else. If you set that to `drupal8`, you would go to `http://drupal8.docker.localhost` in your browser to see your site.
