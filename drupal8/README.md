@@ -53,3 +53,33 @@ Run drush commands to check status, copy a database and files from production, c
 docker-compose exec --user 82 php drush
 ```
 For ease in use, create an alias for that in your bash_profile.
+
+More Docker commands:
+
+```
+// See all the containers:
+docker ps
+
+// Start your containers:
+docker-compose up -d
+
+// Stop your containers without destroying data:
+docker-compose stop
+
+// Destroy containers and all their data:
+docker-compose down -v
+
+// Watch the logs (exit with ctl-c):
+docker compose logs -f
+
+// Execute a command inside the php container:
+docker-compose exec --user 82 php
+
+// Run drush:
+docker-compose exec --user 82 php drush st
+
+// Execute mysql:
+docker-compose exec --user 82 php mysql -udrupal -pdrupal -hmariadb
+
+
+```
